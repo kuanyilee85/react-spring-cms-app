@@ -18,18 +18,12 @@ class LoginComponent extends Component {
       password: '',
     };
 
-    this.handleUsernamechange = this.handleUsernamechange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleChangle = this.handleChangle.bind(this);
   }
 
-  handleUsernamechange(value) {
-    console.log('Username: ' + value);
-    this.setState({ username: value });
-  }
-
-  handlePasswordChange(pwd) {
-    console.log('Password: ' + pwd);
-    this.setState({ password: pwd });
+  handleChangle(e) {
+    console.log(e.target.name + ': ' + e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
@@ -42,7 +36,7 @@ class LoginComponent extends Component {
           placeholder="Username"
           value={this.state.username}
           onChange={(e) => {
-            this.handleUsernamechange(e.target.value);
+            this.handleChangle(e);
           }}
         />
         Password:
@@ -52,7 +46,7 @@ class LoginComponent extends Component {
           placeholder="Password"
           value={this.state.password}
           onChange={(e) => {
-            this.handlePasswordChange(e.target.value);
+            this.handleChangle(e);
           }}
         />
         <button>Login</button>
