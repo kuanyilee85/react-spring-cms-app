@@ -16,6 +16,8 @@ class LoginComponent extends Component {
     this.state = {
       username: 'in28minutes',
       password: '',
+      hasLoginFailed: false,
+      showSuccessMessage: false,
     };
 
     this.handleChangle = this.handleChangle.bind(this);
@@ -26,9 +28,26 @@ class LoginComponent extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  loginClicked() {
+    if (
+      this.state.username === 'in28minutes' &&
+      this.state.password === 'dummy'
+    ) {
+      console.log('successful');
+      this.setState({ hasLoginFailed: false });
+      this.setState({ showSuccessMessage: true });
+    } else {
+      console.log('failed');
+      this.setState({ hasLoginFailed: true });
+      this.setState({ showSuccessMessage: false });
+    }
+  }
+
   render() {
     return (
       <div>
+        {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
+        {this.state.showSuccessMessage && <div>Login successful</div>}
         Username:
         <input
           type="text"
@@ -49,7 +68,12 @@ class LoginComponent extends Component {
             this.handleChangle(e);
           }}
         />
-        <button>Login</button>
+        <button
+          onClick={() => {
+            this.loginClicked();
+          }}>
+          Login
+        </button>
       </div>
     );
   }
