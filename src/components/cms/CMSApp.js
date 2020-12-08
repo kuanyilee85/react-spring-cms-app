@@ -1,12 +1,72 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 export default class CMSApp extends Component {
   render() {
     return (
       <div className="TodoApp">
-        <LoginComponent />
+        <Router>
+          <>
+            <Switch>
+              <Route path="/" exact component={LoginComponent} />
+              <Route path="/login" component={LoginComponent} />
+              <Route path="/welcome/:name" component={WelcomeComponent} />
+              <Route path="/employees" component={ListEmployeeComponent} />
+              <Route path="" component={ErrorComponent} />
+            </Switch>
+          </>
+        </Router>
       </div>
     );
+  }
+}
+
+class ListEmployeeComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      employees: [
+        { id: 1, firstname: 'Kelly', lastname: 'Slater' },
+        { id: 2, firstname: 'JohnJohn', lastname: 'Florence' },
+        { id: 3, firstname: 'Matthew', lastname: 'Mcconaughey' },
+      ],
+    };
+  }
+  render() {
+    return (
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>firstname</th>
+              <th>lastname</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.employees.map((employee) => (
+              <tr>
+                <td>{employee.id}</td>
+                <td>{employee.firstname}</td>
+                <td>{employee.lastname}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
+class WelcomeComponent extends Component {
+  render() {
+    return <div>Welcome {this.props.match.params.name}</div>;
+  }
+}
+
+class ErrorComponent extends Component {
+  render() {
+    return <div>404 Not Found</div>;
   }
 }
 
@@ -33,11 +93,10 @@ class LoginComponent extends Component {
       this.state.username === 'in28minutes' &&
       this.state.password === 'dummy'
     ) {
-      console.log('successful');
-      this.setState({ hasLoginFailed: false });
-      this.setState({ showSuccessMessage: true });
+      this.props.history.push(`/welcome/${this.state.username}`);
+      // this.setState({ hasLoginFailed: false });
+      // this.setState({ showSuccessMessage: true });
     } else {
-      console.log('failed');
       this.setState({ hasLoginFailed: true });
       this.setState({ showSuccessMessage: false });
     }
