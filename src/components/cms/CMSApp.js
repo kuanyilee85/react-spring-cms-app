@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import AuthenticationService from './AuthenticationService.js';
+import AuthenticatedRoute from './AuthenticatedRoute';
 
 export default class CMSApp extends Component {
   render() {
@@ -12,9 +13,15 @@ export default class CMSApp extends Component {
             <Switch>
               <Route path="/" exact component={LoginComponent} />
               <Route path="/login" component={LoginComponent} />
-              <Route path="/logout" component={LogoutComponent} />
-              <Route path="/welcome/:name" component={WelcomeComponent} />
-              <Route path="/employees" component={ListEmployeeComponent} />
+              <AuthenticatedRoute path="/logout" component={LogoutComponent} />
+              <AuthenticatedRoute
+                path="/welcome/:name"
+                component={WelcomeComponent}
+              />
+              <AuthenticatedRoute
+                path="/employees"
+                component={ListEmployeeComponent}
+              />
               <Route path="" component={ErrorComponent} />
             </Switch>
             <FooterComponent />
