@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import AuthenticationService from './AuthenticationService.js';
 
 export default class CMSApp extends Component {
   render() {
@@ -26,37 +27,58 @@ export default class CMSApp extends Component {
 
 class HeaderComponent extends Component {
   render() {
+    const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
+    console.log('iS USER LOGGED IN? ' + isUserLoggedIn);
     return (
       <header>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
           <div>
-            <a href="/welcome/Administrator" className="navbar-brand">
-              Administrator
-            </a>
+            {isUserLoggedIn ? (
+              <a
+                href="http://localhost:3000/welcome/Administrator"
+                className="navbar-brand">
+                CMS App
+              </a>
+            ) : (
+              <a href="http://localhost:3000/login" className="navbar-brand">
+                CMS App
+              </a>
+            )}
           </div>
           <ul className="navbar-nav">
-            <li>
-              <Link className="nav-link" to="/welcome/Administrator">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link className="nav-link" to="/employees">
-                Employees
-              </Link>
-            </li>
+            {isUserLoggedIn && (
+              <li>
+                <Link className="nav-link" to="/welcome/Administrator">
+                  Home
+                </Link>
+              </li>
+            )}
+            {isUserLoggedIn && (
+              <li>
+                <Link className="nav-link" to="/employees">
+                  Employees
+                </Link>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav navbar-collapse justify-content-end">
-            <li>
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link className="nav-link" to="/logout">
-                Logout
-              </Link>
-            </li>
+            {!isUserLoggedIn && (
+              <li>
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+            )}
+            {isUserLoggedIn && (
+              <li>
+                <Link
+                  className="nav-link"
+                  to="/logout"
+                  onClick={AuthenticationService.logout}>
+                  Logout
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </header>
@@ -119,7 +141,7 @@ class ListEmployeeComponent extends Component {
             </thead>
             <tbody>
               {this.state.employees.map((employee) => (
-                <tr>
+                <tr key={employee.id}>
                   <td>{employee.firstname}</td>
                   <td>{employee.lastname}</td>
                   <td>{employee.onBoard.toString()}</td>
@@ -158,7 +180,8 @@ class LogoutComponent extends Component {
   render() {
     return (
       <>
-        <div>Thank you for use our CMS Application.</div>
+        <h1>You are logged out</h1>
+        <div>Thank you for use our Application.</div>
       </>
     );
   }
@@ -178,7 +201,7 @@ class LoginComponent extends Component {
   }
 
   handleChangle(e) {
-    console.log(e.target.name + ': ' + e.target.value);
+    // console.log(e.target.name + ': ' + e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -187,6 +210,10 @@ class LoginComponent extends Component {
       this.state.username === 'Administrator' &&
       this.state.password === 'dummy'
     ) {
+      AuthenticationService.registerSuccessfulLogin(
+        this.state.username,
+        this.state.password
+      );
       this.props.history.push(`/welcome/${this.state.username}`);
       // this.setState({ hasLoginFailed: false });
       // this.setState({ showSuccessMessage: true });
