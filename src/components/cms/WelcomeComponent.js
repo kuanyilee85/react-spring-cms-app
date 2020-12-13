@@ -10,6 +10,7 @@ export class WelcomeComponent extends Component {
     };
     this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this);
     this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
   render() {
     return (
@@ -34,13 +35,30 @@ export class WelcomeComponent extends Component {
   }
 
   retrieveWelcomeMessage() {
-    HelloWorldService.executeHelloWorldService().then((Response) =>
+    // HelloWorldService.executeHelloWorldService().then((Response) =>
+    //   // console.log(Response)
+    //   this.handleSuccessfulResponse(Response)
+    // );
+    HelloWorldService.executeHelloWorldBeanService().then((Response) =>
       // console.log(Response)
       this.handleSuccessfulResponse(Response)
     );
+    HelloWorldService.executeHelloWorldPathVariableService(
+      this.props.match.params.name
+    )
+      .then((Response) =>
+        // console.log(Response)
+        this.handleSuccessfulResponse(Response)
+      )
+      .catch((error) => this.handleError(error));
   }
 
   handleSuccessfulResponse(Response) {
-    this.setState({ welcomeMessage: Response.data });
+    console.log(Response);
+    this.setState({ welcomeMessage: Response.data.message });
+  }
+  handleError(error) {
+    console.log(error.response.data.message);
+    this.setState({ welcomeMessage: error.response.data.message });
   }
 }
