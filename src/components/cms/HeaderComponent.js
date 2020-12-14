@@ -32,8 +32,8 @@ export class HeaderComponent extends Component {
             )}
             {isUserLoggedIn && (
               <li>
-                <Link className="nav-link" to="/employees">
-                  Employees
+                <Link className="nav-link" to="/employee">
+                  Employee
                 </Link>
               </li>
             )}

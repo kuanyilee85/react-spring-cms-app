@@ -12,16 +12,16 @@ export class ListEmployeeComponent extends Component {
     };
     this.handleEmployeeDelete = this.handleEmployeeDelete.bind(this);
     this.handleEmployeeUpdate = this.handleEmployeeUpdate.bind(this);
-    this.refreshEmployees = this.refreshEmployees.bind(this);
+    this.refreshEmployee = this.refreshEmployee.bind(this);
   }
 
   // make API call after component is created
   componentDidMount() {
-    this.refreshEmployees();
+    this.refreshEmployee();
   }
 
   // Sent DELETE request to backend
-  refreshEmployees() {
+  refreshEmployee() {
     let username = AuthenticationService.getLoggedInUserName();
     EmployeeDataService.retriveAllEmployee(username).then((response) => {
       this.setState({ employees: response.data });
@@ -33,7 +33,7 @@ export class ListEmployeeComponent extends Component {
     let username = AuthenticationService.getLoggedInUserName();
     EmployeeDataService.deleteEmployee(username, id).then((response) => {
       this.setState({ message: `Delete of employee ${id} Successful` });
-      this.refreshEmployees();
+      this.refreshEmployee();
     });
   }
 
@@ -41,6 +41,7 @@ export class ListEmployeeComponent extends Component {
   handleEmployeeUpdate(id) {
     let username = AuthenticationService.getLoggedInUserName();
     console.log(username + ', ' + id);
+    this.props.history.push(`/employee/${id}`);
   }
 
   render() {

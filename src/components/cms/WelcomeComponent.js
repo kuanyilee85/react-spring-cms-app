@@ -17,9 +17,9 @@ export class WelcomeComponent extends Component {
       <>
         <h1>Welcome!</h1>
         <div className="container">
-          Hi! <i>{this.props.match.params.name}</i>. Welcome back to Employees
-          Management App. <br /> View employees from{' '}
-          <Link to="/employees">here</Link>.
+          Hi! <i>{this.props.match.params.name}</i>. Welcome back to Employee
+          Management App. <br /> View employee from{' '}
+          <Link to="/employee">here</Link>.
         </div>
         <div className="container">
           Click here to get a customized welcome message.

@@ -8,6 +8,7 @@ import { ListEmployeeComponent } from './ListEmployeeComponent';
 import { WelcomeComponent } from './WelcomeComponent';
 import { ErrorComponent } from './ErrorComponent';
 import { LogoutComponent } from './LogoutComponent';
+import EmployeeComponent from './EmployeeComponent';
 
 export default class CMSApp extends Component {
   render() {
@@ -25,7 +26,11 @@ export default class CMSApp extends Component {
                 component={WelcomeComponent}
               />
               <AuthenticatedRoute
-                path="/employees"
+                path="/employee/:id"
+                component={EmployeeComponent}
+              />
+              <AuthenticatedRoute
+                path="/employee"
                 component={ListEmployeeComponent}
               />
               <Route path="" component={ErrorComponent} />
