@@ -1,60 +1,55 @@
 import React, { Component } from 'react';
 import EmployeeDataService from '../api/employee/EmployeeDataService';
-import AuthenticationService from './AuthenticatedRoute';
+import AuthenticationService from './AuthenticationService';
 
 export class ListEmployeeComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      employees: [
-        // make state empty initially
-        // {
-        //   id: 1,
-        //   firstname: 'Kelly',
-        //   lastname: 'Slater',
-        //   title: 'engineer',
-        //   department: 'engineering',
-        //   hireDate: new Date(),
-        //   onBoard: true,
-        //   note: 'package a',
-        // },
-        // {
-        //   id: 2,
-        //   firstname: 'JohnJohn',
-        //   lastname: 'Florence',
-        //   title: 'tech lead',
-        //   department: 'engineering',
-        //   hireDate: new Date(),
-        //   onBoard: false,
-        //   note: 'package b',
-        // },
-        // {
-        //   id: 3,
-        //   firstname: 'Matthew',
-        //   lastname: 'Mcconaughey',
-        //   title: 'manager',
-        //   department: 'human resource',
-        //   hireDate: new Date(),
-        //   onBoard: false,
-        //   note: 'package c',
-        // },
-      ],
+      // make state empty initially
+      employees: [],
+      message: null,
     };
+    this.handleEmployeeDelete = this.handleEmployeeDelete.bind(this);
+    this.handleEmployeeUpdate = this.handleEmployeeUpdate.bind(this);
+    this.refreshEmployees = this.refreshEmployees.bind(this);
   }
 
   // make API call after component is created
   componentDidMount() {
-    let username = AuthenticationService.getLoggedInUserName;
-    EmployeeDataService.retriveAllEmployee(username).then((Response) => {
-      // return console.log(Response);
-      this.setState({ employees: Response.data });
+    this.refreshEmployees();
+  }
+
+  // Sent DELETE request to backend
+  refreshEmployees() {
+    let username = AuthenticationService.getLoggedInUserName();
+    EmployeeDataService.retriveAllEmployee(username).then((response) => {
+      this.setState({ employees: response.data });
     });
+  }
+
+  // handle DELETE button clicked
+  handleEmployeeDelete(id) {
+    let username = AuthenticationService.getLoggedInUserName();
+    EmployeeDataService.deleteEmployee(username, id).then((response) => {
+      this.setState({ message: `Delete of employee ${id} Successful` });
+      this.refreshEmployees();
+    });
+  }
+
+  // handle UPDATE btn clicked
+  handleEmployeeUpdate(id) {
+    let username = AuthenticationService.getLoggedInUserName();
+    console.log(username + ', ' + id);
   }
 
   render() {
     return (
       <div>
         <h1>Employee List</h1>
+        {this.state.message && (
+          <div className="alert alert-success">{this.state.message}</div>
+        )}
         <div className="container">
           <table className="table">
             <thead>
@@ -66,6 +61,8 @@ export class ListEmployeeComponent extends Component {
                 <th>Hire Date</th>
                 <th>OnBoard</th>
                 <th>Note</th>
+                <th>Update</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +75,20 @@ export class ListEmployeeComponent extends Component {
                   <td>{employee.hireDate.toString()}</td>
                   <td>{employee.onBoard.toString()}</td>
                   <td>{employee.note}</td>
+                  <td>
+                    <button
+                      className="btn btn-success"
+                      onClick={() => this.handleEmployeeUpdate(employee.id)}>
+                      Update
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => this.handleEmployeeDelete(employee.id)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
