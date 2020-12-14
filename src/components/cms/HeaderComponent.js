@@ -12,12 +12,12 @@ export class HeaderComponent extends Component {
           <div>
             {isUserLoggedIn ? (
               <a
-                href="http://localhost:3000/welcome/Administrator"
+                href="http://localhost:4200/welcome/Administrator"
                 className="navbar-brand">
                 CMS App
               </a>
             ) : (
-              <a href="http://localhost:3000/login" className="navbar-brand">
+              <a href="http://localhost:4200/login" className="navbar-brand">
                 CMS App
               </a>
             )}
