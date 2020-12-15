@@ -76,7 +76,26 @@ export default class EmployeeComponent extends Component {
     return errors;
   }
 
+  // sumbit the PUT request to backend
   handleSubmit(values) {
+    let username = AuthenticationService.getLoggedInUserName();
+
+    let putRequestBody = {
+      id: this.state.id,
+      firstname: values.firstname,
+      lastname: values.lastname,
+      title: values.title,
+      department: values.department,
+      hireDate: values.hireDate,
+      note: values.note,
+      onBoard: values.onBoard,
+    };
+
+    EmployeeDataService.updateEmployee(
+      username,
+      this.state.id,
+      putRequestBody
+    ).then(() => this.props.history.push('/employee'));
     console.log(values);
   }
 
@@ -219,6 +238,11 @@ export default class EmployeeComponent extends Component {
                 </fieldset>
                 <button className="btn btn-success" type="submit">
                   Save
+                </button>
+                <button
+                  className="btn btn-outline-primary ml-2"
+                  onClick={() => this.props.history.push('/employee')}>
+                  Cancel
                 </button>
               </Form>
             )}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import EmployeeDataService from '../api/employee/EmployeeDataService';
 import AuthenticationService from './AuthenticationService';
+import moment from 'moment';
 
 export class ListEmployeeComponent extends Component {
   constructor(props) {
@@ -73,7 +74,7 @@ export class ListEmployeeComponent extends Component {
                   <td>{employee.lastname}</td>
                   <td>{employee.title}</td>
                   <td>{employee.department}</td>
-                  <td>{employee.hireDate.toString()}</td>
+                  <td>{moment(employee.hireDate).format('YYYY-MM-DD')}</td>
                   <td>{employee.onBoard.toString()}</td>
                   <td>{employee.note}</td>
                   <td>
