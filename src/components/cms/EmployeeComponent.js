@@ -1,6 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import moment from 'moment';
 import React, { Component } from 'react';
+import EmployeeDataService from '../api/employee/EmployeeDataService';
+import AuthenticationService from './AuthenticationService';
 
 export default class EmployeeComponent extends Component {
   constructor(props) {
@@ -12,23 +14,41 @@ export default class EmployeeComponent extends Component {
       title: '',
       department: '',
       hireDate: moment(new Date()).format('YYYY-MM-DD'),
-      isOnBoard: '',
+      onBoard: '',
       note: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validate = this.validate.bind(this);
   }
 
+  // get Employee data from backend by API
+  componentDidMount() {
+    let username = AuthenticationService.getLoggedInUserName();
+    EmployeeDataService.retriveEmployee(username, this.state.id).then(
+      (response) =>
+        // console.log(response)
+        this.setState({
+          firstname: response.data.firstname,
+          lastname: response.data.lastname,
+          title: response.data.title,
+          department: response.data.department,
+          hireDate: moment(response.data.hireDate).format('YYYY-MM-DD'),
+          onBoard: response.data.onBoard,
+          note: response.data.note,
+        })
+    );
+  }
+
   validate(values) {
     let errors = {};
     if (!values.firstname) {
       errors.firstname = 'Enter firstname';
-    } else if (values.firstname.length < 5) {
+    } else if (values.firstname.length < 3) {
       errors.firstname = 'Enter at least 5 characters in firstname';
     }
     if (!values.lastname) {
       errors.lastname = 'Enter lastname';
-    } else if (values.lastname.length < 5) {
+    } else if (values.lastname.length < 3) {
       errors.lastname = 'Enter at least 5 characters in lastname';
     }
     if (!values.title) {
@@ -49,8 +69,8 @@ export default class EmployeeComponent extends Component {
     if (!moment(values.hireDate).isValid()) {
       errors.hireDate = 'Enter a valid Hire Date';
     }
-    if (values.isOnBoard !== 'true' && values.isOnBoard !== 'false') {
-      errors.isOnBoard = 'Enter if onboard: true or false';
+    if (values.onBoard !== 'true' && values.onBoard !== 'false') {
+      errors.onBoard = 'Enter if onboard: true or false';
     }
 
     return errors;
@@ -67,7 +87,7 @@ export default class EmployeeComponent extends Component {
       title,
       department,
       hireDate,
-      isOnBoard,
+      onBoard,
       note,
     } = this.state;
 
@@ -83,13 +103,14 @@ export default class EmployeeComponent extends Component {
               title,
               department,
               hireDate,
-              isOnBoard,
+              onBoard,
               note,
             }}
             onSubmit={this.handleSubmit}
             validate={this.validate}
             validateOnBlur={false}
-            validateOnChange={false}>
+            validateOnChange={false}
+            enableReinitialize={true}>
             {(props) => (
               <Form>
                 <ErrorMessage
@@ -118,7 +139,7 @@ export default class EmployeeComponent extends Component {
                   className="alert alert-warning"
                 />
                 <ErrorMessage
-                  name="isOnBoard"
+                  name="onBoard"
                   component="div"
                   className="alert alert-warning"
                 />
@@ -182,7 +203,7 @@ export default class EmployeeComponent extends Component {
                   <Field
                     className="form-control"
                     type="boolean"
-                    name="isOnBoard"
+                    name="onBoard"
                     placeholder="If employee onboard?"
                   />
                 </fieldset>
