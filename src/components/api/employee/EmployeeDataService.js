@@ -20,6 +20,12 @@ class EmployeeDataService {
       employee
     );
   }
+  createEmployee(name, employee) {
+    return Axios.post(
+      `http://localhost:8080/users/${name}/employees/`,
+      employee
+    );
+  }
 }
 
 export default new EmployeeDataService();

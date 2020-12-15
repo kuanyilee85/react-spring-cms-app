@@ -11,9 +11,10 @@ export class ListEmployeeComponent extends Component {
       employees: [],
       message: null,
     };
+    this.refreshEmployee = this.refreshEmployee.bind(this);
     this.handleEmployeeDelete = this.handleEmployeeDelete.bind(this);
     this.handleEmployeeUpdate = this.handleEmployeeUpdate.bind(this);
-    this.refreshEmployee = this.refreshEmployee.bind(this);
+    this.handleEmployeeCreate = this.handleEmployeeCreate.bind(this);
   }
 
   // make API call after component is created
@@ -38,11 +39,16 @@ export class ListEmployeeComponent extends Component {
     });
   }
 
-  // handle UPDATE btn clicked
+  // handle UPDATE button clicked
   handleEmployeeUpdate(id) {
-    let username = AuthenticationService.getLoggedInUserName();
-    console.log(username + ', ' + id);
+    // console.log(username + ', ' + id);
     this.props.history.push(`/employee/${id}`);
+  }
+
+  // handle CREATE button clicked
+  handleEmployeeCreate() {
+    // id => -1 means create new employee
+    this.props.history.push(`/employee/-1`);
   }
 
   render() {
@@ -95,6 +101,13 @@ export class ListEmployeeComponent extends Component {
               ))}
             </tbody>
           </table>
+          <div className="row">
+            <button
+              className="btn btn-success"
+              onClick={() => this.handleEmployeeCreate()}>
+              Add
+            </button>
+          </div>
         </div>
       </div>
     );

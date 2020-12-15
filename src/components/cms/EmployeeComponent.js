@@ -23,6 +23,10 @@ export default class EmployeeComponent extends Component {
 
   // get Employee data from backend by API
   componentDidMount() {
+    if (this.state.id === -1) {
+      return;
+    }
+
     let username = AuthenticationService.getLoggedInUserName();
     EmployeeDataService.retriveEmployee(username, this.state.id).then(
       (response) =>
@@ -80,7 +84,7 @@ export default class EmployeeComponent extends Component {
   handleSubmit(values) {
     let username = AuthenticationService.getLoggedInUserName();
 
-    let putRequestBody = {
+    let requestBody = {
       id: this.state.id,
       firstname: values.firstname,
       lastname: values.lastname,
@@ -91,12 +95,17 @@ export default class EmployeeComponent extends Component {
       onBoard: values.onBoard,
     };
 
-    EmployeeDataService.updateEmployee(
-      username,
-      this.state.id,
-      putRequestBody
-    ).then(() => this.props.history.push('/employee'));
-    console.log(values);
+    if (this.state.id === -1) {
+      EmployeeDataService.createEmployee(username, requestBody).then(() =>
+        this.props.history.push('/employee')
+      );
+    } else {
+      EmployeeDataService.updateEmployee(
+        username,
+        this.state.id,
+        requestBody
+      ).then(() => this.props.history.push('/employee'));
+    }
   }
 
   render() {
