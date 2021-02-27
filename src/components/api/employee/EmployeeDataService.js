@@ -1,30 +1,26 @@
 import Axios from 'axios';
+import { API_URL, JPA_API_URL } from '../../../Constants';
 
 class EmployeeDataService {
   // GET all
   retriveAllEmployee(name) {
-    return Axios.get(`http://localhost:8080/users/${name}/employees/`);
+    return Axios.get(`${JPA_API_URL}/users/${name}/employees/`);
   }
   // GET single
   retriveEmployee(name, id) {
-    return Axios.get(`http://localhost:8080/users/${name}/employees/${id}`);
+    return Axios.get(`${JPA_API_URL}/users/${name}/employees/${id}`);
   }
   // DELETE
   deleteEmployee(name, id) {
-    return Axios.delete(`http://localhost:8080/users/${name}/employees/${id}`);
+    return Axios.delete(`${API_URL}/users/${name}/employees/${id}`);
   }
   // PUT
   updateEmployee(name, id, employee) {
-    return Axios.put(
-      `http://localhost:8080/users/${name}/employees/${id}`,
-      employee
-    );
+    return Axios.put(`${API_URL}/users/${name}/employees/${id}`, employee);
   }
+  // CREATE
   createEmployee(name, employee) {
-    return Axios.post(
-      `http://localhost:8080/users/${name}/employees/`,
-      employee
-    );
+    return Axios.post(`${API_URL}/users/${name}/employees/`, employee);
   }
 }
 
