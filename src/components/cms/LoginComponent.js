@@ -5,7 +5,7 @@ export class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'Administrator',
+      username: 'admin',
       password: '',
       hasLoginFailed: false,
       showSuccessMessage: false,
@@ -20,10 +20,7 @@ export class LoginComponent extends Component {
   }
 
   loginClicked() {
-    if (
-      this.state.username === 'Administrator' &&
-      this.state.password === 'dummy'
-    ) {
+    if (this.state.username === 'admin' && this.state.password === 'dummy') {
       AuthenticationService.registerSuccessfulLogin(
         this.state.username,
         this.state.password
