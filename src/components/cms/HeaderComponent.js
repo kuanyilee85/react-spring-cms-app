@@ -9,19 +9,21 @@ export class HeaderComponent extends Component {
     return (
       <header>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-          <div>
+          <ul className="navbar-nav">
             {isUserLoggedIn ? (
-              <a
-                href="http://localhost:4200/welcome/Administrator"
-                className="navbar-brand">
-                CMS App
-              </a>
+              <li>
+                <Link className="nav-link" to="/welcome/Administrator">
+                  CMS App
+                </Link>
+              </li>
             ) : (
-              <a href="http://localhost:4200/login" className="navbar-brand">
-                CMS App
-              </a>
+              <li>
+                <Link className="nav-link" to="/login">
+                  CMS App
+                </Link>
+              </li>
             )}
-          </div>
+          </ul>
           <ul className="navbar-nav">
             {isUserLoggedIn && (
               <li>

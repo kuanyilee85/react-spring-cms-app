@@ -3,4 +3,4 @@
 
 // prod env
 export const JPA_API_URL =
-  'http://Javacrm-env-1.eba-tiecd6ge.us-east-2.elasticbeanstalk.com';
+  'http://javareactcrm-env.eba-hfarem3n.us-east-2.elasticbeanstalk.com/';
