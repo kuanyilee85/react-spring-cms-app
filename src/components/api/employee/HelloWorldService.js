@@ -1,15 +1,16 @@
 import Axios from 'axios';
+import { JPA_API_URL } from '../../../Constants';
 
 class HelloWorldService {
   executeHelloWorldService() {
     // console.log('executed service');
-    return Axios.get('http://localhost:8080/hello-world/');
+    return Axios.get(`${JPA_API_URL}/hello-world/`);
   }
   executeHelloWorldBeanService() {
-    return Axios.get('http://localhost:8080/hello-world-bean/');
+    return Axios.get(`${JPA_API_URL}/hello-world-bean/`);
   }
-  executeHelloWorldPathVariableService(name) {
-    return Axios.get(`http://localhost:8080/hello-world/path-variable/${name}`);
+  executeHelloWorldPathVariableService(username) {
+    return Axios.get(`${JPA_API_URL}/hello-world/path-variable/${username}`);
   }
 }
 
