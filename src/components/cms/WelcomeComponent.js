@@ -21,24 +21,12 @@ export class WelcomeComponent extends Component {
           Management App. <br /> View employee from{' '}
           <Link to="/employee">here</Link>.
         </div>
-        <div className="container">
-          Click here to get a customized welcome message.
-          <button
-            className="btn btn-success"
-            onClick={this.retrieveWelcomeMessage}>
-            Get Welcome Message
-          </button>
-        </div>
         <div className="container">{this.state.welcomeMessage}</div>
       </>
     );
   }
 
   retrieveWelcomeMessage() {
-    // HelloWorldService.executeHelloWorldService().then((Response) =>
-    //   // console.log(Response)
-    //   this.handleSuccessfulResponse(Response)
-    // );
     HelloWorldService.executeHelloWorldBeanService().then((Response) =>
       // console.log(Response)
       this.handleSuccessfulResponse(Response)
