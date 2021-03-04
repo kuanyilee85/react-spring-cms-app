@@ -5,7 +5,7 @@ export class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'admin',
+      username: '',
       password: '',
       hasLoginFailed: false,
       showSuccessMessage: false,
@@ -47,17 +47,17 @@ export class LoginComponent extends Component {
           <input
             type="text"
             name="username"
-            placeholder="Username"
+            placeholder="Username: admin"
             value={this.state.username}
             onChange={(e) => {
               this.handleChangle(e);
             }}
-          />
+          />{' '}
           Password:
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Password: dummy"
             value={this.state.password}
             onChange={(e) => {
               this.handleChangle(e);
